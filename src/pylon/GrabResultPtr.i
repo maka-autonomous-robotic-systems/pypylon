@@ -120,7 +120,7 @@
         from contextlib import contextmanager
         @contextmanager
         @needs_numpy
-        def GetArrayZeroCopy(self, raw = False):
+        def GetArrayZeroCopy(self, raw = False, unsafe = False):
             '''
             Get a numpy array for the image buffer as zero copy reference to the underlying buffer.
             Note: The context manager variable MUST be released before leaving the scope.
@@ -157,7 +157,7 @@
             # There will be one outstanding reference for the 'with target'.
             # That is OK since that will be released right after this function
             # returns.
-            if self.GetNumBufferExports(mv) > 1:
+            if not unsafe and self.GetNumBufferExports(mv) > 1:
                 raise RuntimeError("Please remove any references to the array before leaving context manager scope!!!")
     del _gazc_python_version_info
 %}
